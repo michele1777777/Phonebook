@@ -3,6 +3,7 @@
 
 ## Overview
 This application serves as a comprehensive contact management system, enabling users to efficiently manage personal and professional contacts. It offers functionalities such as adding, editing, and deleting user profiles and their associated contacts. To enhance user experience, the application incorporates visually appealing UI components like rounded buttons, custom scroll bars, and SVG icons.
+https://github.com/michele1777777/Phonebook
 
 ## Features
 
@@ -37,9 +38,6 @@ For the application to load images correctly, ensure that `phonebook.jar` is pla
 
 ## Technical Documentation
 For developers interested in the application's architecture and custom UI components, comprehensive Javadoc comments are available throughout the codebase, offering insights into the functionality and usage of different classes and methods.
-
-## Support
-If you encounter any issues or require assistance, please refer to the user manual included in the application package or contact our support team.
 
 Enjoy managing your contacts with ease using the Phonebook application!
 
