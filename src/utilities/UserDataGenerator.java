@@ -50,7 +50,7 @@ public class UserDataGenerator {
      */
     private static User createUser() {
         String[] userInfo = {
-            "Michele", "Leuti", "UserTest1", "Password123!"
+            "Michele", "Leuti", "UserTest", "Password123!"
         };
         return new User(userInfo); 
     }

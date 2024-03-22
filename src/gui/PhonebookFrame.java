@@ -43,6 +43,7 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 	private SvgButton deletePerson;
 	private SvgButton pConfirmEdit;
 	private SvgButton pCancelEdit;
+	private SvgButton logout;
 	private SvgButton addCancelButton;
 	private SvgButton addConfirmButton;
 	private JTextField searchField;
@@ -592,6 +593,47 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 	        panel2.add(uEliminate);
 	        
 	        userPanel.add(panel2);
+	        
+	        RoundedPanel p3 = new RoundedPanel(25);
+	        p3.setBackground(new Color(0,0,0,0));
+	        p3.setBorder(new RoundedCornerBorder(25, steelBlue));
+	        p3.setBounds(150, 180, 120, 34);
+	        p3.setLayout(null);
+	        p3.addMouseListener(new MouseAdapter() {
+	            @Override
+	            public void mouseClicked(MouseEvent e) {
+	                if (SwingUtilities.isLeftMouseButton(e)) {
+	                	logout.doClick();
+	                }
+	            }
+	        });
+	        userPanel.add(p3);
+	        
+	        RoundedPanel panel3 = new RoundedPanel(25);
+	        panel3.setBackground(Color.white);
+	        panel3.setBorder(new RoundedCornerBorder(25, steelBlue));
+	        panel3.setBounds(150, 180, 120, 34);
+	        panel3.setLayout(null);
+
+	        JTextField t3 = RoundedTextField.createRoundedTextField("Log Out", null);
+	        t3.setBackground(Color.white);
+	        t3.setEditable(false);
+	        t3.setForeground(steelBlue);
+	        t3.setBounds(45,1,65,30);
+	        t3.setFocusable(false);
+	        t3.setBorder(null);
+	        panel3.add(t3);
+	        
+	        filePath = "Images/logout.svg";
+	        logout = new SvgButton(filePath);
+	        logout.setBorder(new RoundedCornerBorder(15, null));
+	        logout.setBackground(Color.white);
+	        logout.setBounds(5, 9,15,15);
+	        logout.setBorder(new MatteBorder(0,0,0,0,background));
+	        logout.addActionListener(this);
+	        panel3.add(logout);
+	        
+	        userPanel.add(panel3);
 		}
 		
 		filePath = "Images/user.svg";
@@ -1157,9 +1199,11 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 				try {
 					user.setName(uName.getText());
 					user.setSurname(uSurname.getText());
-					PhoneAction.checkUsername(uUsername.getText());
-					PhoneAction.editUser(user);
-					user.setUsername(uUsername.getText());
+					if (!uUsername.getText().equals(user.getUsername())) {
+						user.setUsername(uUsername.getText());
+						PhoneAction.checkUsername(uUsername.getText());
+						PhoneAction.editUser(user);
+					}
 					userPanel.setVisible(false);
 					remove(userPanel);
 					repaint();
@@ -1221,7 +1265,7 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 		
 		if (e.getSource() == this.uEditPasswordButton) {
 			String OldPassword = JOptionPane.showInputDialog(this, "Enter your old password:");
-
+			
 	        if (OldPassword != null && user.checkPassword(OldPassword)) {
 	            // If the old password is correct, prompt for a new password
 	            String newPassword = JOptionPane.showInputDialog(this, "Enter your new password:");
@@ -1234,6 +1278,9 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 	                	JOptionPane.showMessageDialog(this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 	                }
 	            } 
+	            else {
+	            	JOptionPane.showMessageDialog(this, "Password must not be empty", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
 	        } else {
 	            JOptionPane.showMessageDialog(this, "Operation canceled or incorrect old password.", "Error", JOptionPane.ERROR_MESSAGE);
 	        }
@@ -1285,8 +1332,14 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 		if (e.getSource() == this.addConfirmButton) {
 			try {
 				String[] info = {pName.getText(), pSurname.getText(), pAddress.getText(),pPhone.getText(), pAge.getText()};
-				if (info[0] == "Name" || info[1] == "Surname" || info[2] == "Address" || info[3] == "Phone" || info[4] == "Age") {
+				if (info[0].equals("Name")|| info[1].equals("Surname") || info[2].equals("Address") || info[3].equals("Phone") || info[4].equals("Age")) {
 					JOptionPane.showMessageDialog(this, "All fields must not be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
+				
+				for (int i = 0; i < info.length; i++) {
+					if (info[i].trim().isEmpty()) {
+						JOptionPane.showMessageDialog(this, "All fields must not be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+					}
 				}
 				Person p = new Person(info, user);
 				PhoneAction.addPerson(p, user);
@@ -1312,10 +1365,17 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 			addMainComponent(false, false, user.getContacts());
 			repaint();
 		}
+		
+		if(e.getSource() == this.logout) {
+			int response = JOptionPane.showConfirmDialog(this, "Log Out?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
+			if (response == JOptionPane.YES_OPTION) {
+				WindowsManager.switchToLoginFrame();
+			}
+		}
 	}
 	
 	public static void main(String[] args) {
-		user = PhoneAction.searchUser("UserTest");
+		user = PhoneAction.searchUser("UserTest11");
         SwingUtilities.invokeLater(() -> {
             PhonebookFrame frame = new PhonebookFrame();
             frame.setVisible(true);
