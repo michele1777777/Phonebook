@@ -619,7 +619,7 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 	        t3.setBackground(Color.white);
 	        t3.setEditable(false);
 	        t3.setForeground(steelBlue);
-	        t3.setBounds(45,1,65,30);
+	        t3.setBounds(40,1,65,30);
 	        t3.setFocusable(false);
 	        t3.setBorder(null);
 	        panel3.add(t3);
@@ -1272,6 +1272,7 @@ public class PhonebookFrame extends JFrame implements ActionListener{
 	            if (newPassword != null && !newPassword.isEmpty()) {
 	            	try {
 	            		user.setPassword(newPassword);
+	            		PhoneAction.editUser(user);
 		                JOptionPane.showMessageDialog(this, "Password changed successfully!");
 	            	}
 	                catch(Exception e1) {
